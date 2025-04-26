@@ -1,13 +1,1 @@
-
-/* CSS content bạn gửi ở trên */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #ffe0ec, #c3f2ff);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    animation: fadeIn 1s ease-in-out;
-}
-/* (Còn lại full css như bạn gửi, bỏ vô luôn) */
+/* Your CSS code here */
