@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Ngày</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="loading-container" id="loadingContainer">
+    <h1 id="clock">--:--:--</h1>
+    <h3 id="dateDisplay">Hôm nay là ngày --/--/----</h3>
+
+    <div class="key-container">
+      <input type="text" id="keyInput" readonly>
+      <button onclick="copyToClipboard()">Copy</button>
+    </div>
+
+    <div class="footer">
+      Made with ❤️ | <a href="#" class="admin-link">Admin</a>
+    </div>
+  </div>
+
+  <div id="thankYouToast" class="toast">Cảm ơn bạn đã truy cập!</div>
+
+  <div id="copySuccessPopup" class="copy-success-popup">
+    <svg class="checkmark" viewBox="0 0 52 52">
+      <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+      <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16"/>
+    </svg>
+    <p style="margin-top: 10px; font-weight: bold; color: #00cc66;">Đã Copy Thành Công!</p>
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const day = now.getDate();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+
+      document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+      document.getElementById("dateDisplay").textContent = `Hôm nay là ngày ${day}/${month}/${year}`;
+      document.title = `Key Ngày ${day}/${month}/${year}`;
+      
+      setTimeout(updateTime, 1000);
+    }
+
+    function getQueryParam() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const key = urlParams.get('ma');
+      const keyInput = document.getElementById('keyInput');
+      keyInput.value = key ? key : 'Không có key nào';
+    }
+
+    window.onload = function () {
+      updateTime();
+      getQueryParam();
+      autoCopyKey();
+
+      const toast = document.getElementById('thankYouToast');
+      toast.classList.add('show');
+      playToastSound();
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+
+      autoSwitchTheme();
+    };
+
+    function copyToClipboard() {
+      const keyInput = document.getElementById("keyInput");
+      navigator.clipboard.writeText(keyInput.value).then(() => {
+        showCopyPopup();
+        playDingSound();
+      });
+    }
+
+    function autoCopyKey() {
+      setTimeout(() => {
+        copyToClipboard();
+      }, 1000);
+    }
+
+    function showCopyPopup() {
+      const popup = document.getElementById("copySuccessPopup");
+      popup.classList.add("show");
+
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 2500);
+    }
+
+    function playDingSound() {
+      const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-29.mp3');
+      audio.play();
+    }
+
+    function playToastSound() {
+      const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
+      audio.play();
+    }
+
+    function autoSwitchTheme() {
+      const now = new Date();
+      const hours = now.getHours();
+      const body = document.body;
+      const loadingContainer = document.getElementById('loadingContainer');
+
+      if (hours >= 18 || hours <= 5) {
+        body.style.background = "linear-gradient(135deg, #2c3e50, #4ca1af)";
+        loadingContainer.style.background = "rgba(0, 0, 0, 0.4)";
+        loadingContainer.style.border = "2px solid #00c3ff";
+      } else {
+        body.style.background = "linear-gradient(135deg, #ffe0ec, #c3f2ff)";
+        loadingContainer.style.background = "rgba(255, 255, 255, 0.5)";
+        loadingContainer.style.border = "2px solid #ffffff";
+      }
+    }
+  </script>
+
+</body>
+</html>
